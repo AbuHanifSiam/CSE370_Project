@@ -1,0 +1,128 @@
+CREATE TABLE passenger (
+  `Phone` varchar(11) NOT NULL,
+  `P_NID` int(10) NOT NULL,
+  `P_Name` varchar(40) NOT NULL,
+  `password` varchar(20) NOT NULL,
+  PRIMARY KEY (`Phone`),
+  UNIQUE KEY `P_NID` (`P_NID`)
+);
+
+CREATE TABLE `wallet` (
+  `wallet_id` int(5) NOT NULL,
+  `balance` int(10) NOT NULL,
+  `phone` varchar(11) NOT NULL,
+  PRIMARY KEY (`wallet_id`),
+  FOREIGN KEY (`phone`) REFERENCES passenger(Phone) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `w_transac` (
+  `Wallet_ID` int(5) NOT NULL,
+  `Transactions` varchar(100) NOT NULL,
+  PRIMARY KEY (Wallet_ID, Transactions),
+  FOREIGN KEY (Wallet_ID) REFERENCES wallet(Wallet_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `reserved_ticket` (
+  `Pay_ID` varchar(10) NOT NULL,
+  `Pay_time` TIME(0) NOT NULL,
+  `Pay_date` date NOT NULL,
+  `Amount` int(100) NOT NULL,
+  `Ticket_ID` int(20) NOT NULL,
+  `Wallet_ID` int(5) NOT NULL,
+  `Phone` varchar(11) NOT NULL,
+  PRIMARY KEY (Pay_ID),
+  FOREIGN KEY (Ticket_ID) REFERENCES Ticket(Ticket_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Wallet_ID) REFERENCES wallet(Wallet_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Phone) REFERENCES passenger(phone) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `gets_refund` (
+  `Pay_ID` varchar(10) NOT NULL,
+  `Wallet_ID` int(5) NOT NULL,
+  `Journey_time` varchar(100) NOT NULL,
+  `Cancel_time` varchar(100) NOT NULL,
+  `Ticket_price` int(11) NOT NULL,
+  `Refund_amount` int(11) NOT NULL,
+  PRIMARY KEY (Pay_ID, Wallet_ID),
+  FOREIGN KEY (Pay_ID) REFERENCES reserved_ticket(Pay_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Wallet_ID) REFERENCES wallet(Wallet_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `ticket` (
+  `Ticket_ID` int(20) NOT NULL,
+  `Fare` int(11) NOT NULL,
+  `From_date` date NOT NULL,
+  `To_date` date NOT NULL,
+  `From_station` varchar(100) NOT NULL,
+  `To_station` varchar(100) NOT NULL,
+  `Phone` varchar(11) NOT NULL,
+  `Class_ID` varchar(10) NOT NULL,
+  PRIMARY KEY (Ticket_ID),
+  FOREIGN KEY (Phone) REFERENCES passenger(phone) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Class_ID) REFERENCES class(Class_ID) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE `train` (
+  `Train_Code` VARCHAR(10) NOT NULL , 
+  `Train_Name` VARCHAR(20) NOT NULL , 
+  `Frequency` DECIMAL(4,2) NOT NULL , 
+  `Start_time` DATETIME(0) NOT NULL , 
+  `End_time` DATETIME(0) NOT NULL , 
+  `Start_Station_Code` VARCHAR(10) NOT NULL , 
+  `End_Station_Code` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`Train_Code`), 
+  UNIQUE (`Train_Name`)
+ );
+
+ CREATE TABLE Views (
+  `Phone` varchar(11) NOT NULL,
+  `Train_Code` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (Phone, Train_Code),
+  FOREIGN KEY (Phone) REFERENCES passenger(phone) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Train_Code) REFERENCES train(Train_Code) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+
+ CREATE TABLE Stops (
+  `Route_ID` VARCHAR(10) NOT NULL,
+  `Train_Code` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (Route_ID, Train_Code),
+  FOREIGN KEY (Route_ID) REFERENCES Route_Fare(Route_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Train_Code) REFERENCES train(Train_Code) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE Route_fare (
+  `Route_ID` VARCHAR(10) NOT NULL,
+  `Route_name` VARCHAR(10) NOT NULL,
+  Fare int(10) NOT NULL,
+  Zone_ID VARCHAR(10) NOT NULL,
+  PRIMARY KEY (Route_ID)
+);
+
+ CREATE TABLE Determine (
+  `Route_ID` VARCHAR(10) NOT NULL,
+  Ticket_ID INT(20) NOT NULL,
+  PRIMARY KEY (Route_ID, Ticket_ID),
+  FOREIGN KEY (Route_ID) REFERENCES Route_Fare(Route_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Ticket_ID) REFERENCES Ticket(Ticket_ID) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
+CREATE TABLE `class` (
+  `Class_ID` VARCHAR(10) NOT NULL , 
+  `Type` VARCHAR(10) NOT NULL , 
+  `Class_rate` DECIMAL(3,1) NOT NULL , 
+  `Seats_per_coach` INT(100) NOT NULL , 
+  PRIMARY KEY (Class_ID)
+  
+);
+
+
+ CREATE TABLE Seat_Availability (
+  `Class_ID` VARCHAR(10) NOT NULL,
+  `Train_Code` VARCHAR(10) NOT NULL,
+  seat_count INT NOT NULL,
+  PRIMARY KEY (Class_ID, Train_Code),
+  FOREIGN KEY (Class_ID) REFERENCES class(Class_ID) ON DELETE CASCADE ON UPDATE CASCADE,
+  FOREIGN KEY (Train_Code) REFERENCES train(Train_Code) ON DELETE CASCADE ON UPDATE CASCADE
+ );
+
