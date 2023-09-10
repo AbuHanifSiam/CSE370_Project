@@ -156,7 +156,7 @@
             <img src="pics/bangladesh-railway.png" alt="Logo" width="100">
         </a>
         
-        <p><span style="color: rgb(0, 0, 0); font-weight: bold">Developed by Group 8</span></p>
+        <p><span style="color: rgb(0, 0, 0); font-weight: bold">Developed by TEAM ROCK</span></p>
     </div>
     <br>
     <br>
@@ -193,14 +193,7 @@
     <img src="pics/BD.png" alt="Logo" width="50">
     <p><span style="color: rgb(0, 0, 0); font-weight: bold">This Website is a property of the Government of Peoples Republic of Bangladesh.<br> Any forgery of the service provided by this website or copying anything of it is punishable by the law.</span></p>
 </div>
-
-<div class="guidence">
-    <h1 align='center'>Guided By</h1>
-        <p align='center' style="color: Green;font-weight: bold"><b>Aiman Jabeen Ramisa & Abu Raihan Shakil</b></p>
-    
-</div>
-
-    
+   
 <div class="developer">
 <h1 align='center'>Developers</h1>
 </div>
